@@ -21,3 +21,8 @@ module "cloudwatch-metrics" {
   asg_name = module.autoscaling.asg_name
   
 }
+
+module "cloudwatch-logs" {
+  source = "./modules/cloudwatch-logs"
+  
+}
