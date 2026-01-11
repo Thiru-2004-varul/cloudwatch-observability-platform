@@ -9,3 +9,8 @@ module "alb" {
   subnet_ids=module.network.public_subnet_ids
   
 }  
+
+module "autoscaling" {
+  source = "./modules/autoscaling"
+  
+}
