@@ -14,3 +14,10 @@ module "autoscaling" {
   source = "./modules/autoscaling"
   
 }
+
+module "cloudwatch-metrics" {
+  source = "./modules/cloudwatch-metrics"
+  alb_arn = module.alb.alb_arn
+  asg_name = module.autoscaling.asg_name
+  
+}
