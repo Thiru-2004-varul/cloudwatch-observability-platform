@@ -18,19 +18,19 @@ module "autoscaling" {
 }
 
 
-module "cloudwatch-metrics" {
+module "cloudwatch_metrics" {
   source   = "./modules/cloudwatch-metrics"
   alb_arn  = module.alb.alb_arn
   asg_name = module.autoscaling.asg_name
 
 }
 
-module "cloudwatch-logs" {
+module "cloudwatch_logs" {
   source = "./modules/cloudwatch-logs"
 
 }
 
-module "cloudwatch-dashboard" {
+module "cloudwatch_dashboards" {
   source   = "./modules/cloudwatch-dashboards"
   alb_arn  = module.alb.alb_arn
   asg_name = module.autoscaling.asg_name
@@ -43,7 +43,7 @@ module "cloudwatch-agent" {
   name   = "observability"
 }
 
-module "cloudwatch-alarm" {
+module "cloudwatch_alarms" {
   source = "./modules/cloudwatch-alarms"
 
   alarm_prefix   = "observability"
