@@ -26,3 +26,11 @@ module "cloudwatch-logs" {
   source = "./modules/cloudwatch-logs"
   
 }
+
+module "cloudwatch-dashboard" {
+  source = "./modules/cloudwatch-dashboards"
+  alb_arn = module.alb.alb_arn
+  asg_name = module.autoscaling.asg_name
+
+  
+}
