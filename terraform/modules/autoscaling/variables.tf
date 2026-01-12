@@ -5,16 +5,29 @@ variable "asg_name" {
 }
 
 variable "min_size" {
-  type    = number
-  default = 1
+  description = "Minimum number of EC2 instances"
+  type        = number
+  default     = 1
 }
 
 variable "max_size" {
-  type    = number
-  default = 3
+  description = "Maximum number of EC2 instances"
+  type        = number
+  default     = 3
 }
 
 variable "desired_capacity" {
-  type    = number
-  default = 1
+  description = "Desired number of EC2 instances"
+  type        = number
+  default     = 1
+}
+
+variable "instance_profile_name" {
+  description = "IAM instance profile name for CloudWatch Agent"
+  type        = string
+}
+
+variable "subnet_ids" {
+  description = "Subnets used by the Auto Scaling Group"
+  type        = list(string)
 }

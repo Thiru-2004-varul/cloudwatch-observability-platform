@@ -6,25 +6,37 @@ data "aws_ami" "ubuntu" {
     name   = "name"
     values = ["ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"]
   }
-
 }
 
 resource "aws_launch_template" "this" {
-    name_prefix = "Observability-lt-"
-    image_id = data.aws_ami.ubuntu.id
-    instance_type = "t3-micro"
+  name_prefix   = "observability-lt-"
+  image_id      = data.aws_ami.ubuntu.id
+  instance_type = "t3.micro"
 
-    lifecycle {
-      create_before_destroy = true
-    }
+  iam_instance_profile {
+    name = var.instance_profile_name
+  }
 
-    tag_specifications {
-      resource_type = "instance"
-       tags = {
-        Name="observability-instance"
-       }
+  user_data = base64encode(<<-EOF
+    #!/bin/bash
+    set -e
+    apt-get update -y
+    apt-get install -y amazon-cloudwatch-agent
+    /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl \
+      -a start
+  EOF
+  )
+
+  lifecycle {
+    create_before_destroy = true
+  }
+
+  tag_specifications {
+    resource_type = "instance"
+    tags = {
+      Name = "observability-instance"
     }
-  
+  }
 }
 
 resource "aws_autoscaling_group" "this" {
@@ -32,7 +44,7 @@ resource "aws_autoscaling_group" "this" {
   min_size            = var.min_size
   max_size            = var.max_size
   desired_capacity    = var.desired_capacity
-  vpc_zone_identifier = []
+  vpc_zone_identifier = var.subnet_ids
 
   launch_template {
     id      = aws_launch_template.this.id

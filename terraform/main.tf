@@ -12,7 +12,8 @@ module "alb" {
 
 module "autoscaling" {
   source = "./modules/autoscaling"
-  
+  instance_profile_name = module.cloudwatch_agent.instance_profile_name
+  subnet_ids = module.network.private_subnet_ids
 }
 
 module "cloudwatch-metrics" {
@@ -33,4 +34,9 @@ module "cloudwatch-dashboard" {
   asg_name = module.autoscaling.asg_name
 
   
+}
+
+module "cloudwatch_agent" {
+  source = "./modules/cloudwatch-agent"
+  name   = "observability"
 }
