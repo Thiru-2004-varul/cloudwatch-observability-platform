@@ -1,7 +1,6 @@
 # Monitoring Strategy
 
-## Objective
-Provide proactive visibility into infrastructure health and user impact using AWS CloudWatch.
+
 
 ## Metrics Collected
 - EC2 CPU utilization (native)
